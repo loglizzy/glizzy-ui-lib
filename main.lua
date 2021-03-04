@@ -213,6 +213,8 @@ function library:Window(title)
         
         function turn()
         	enabled = not enabled
+        	callback(enabled)
+        	
         	if enabled then
         		while enabled and checked.ImageTransparency > 0 and wait() do
         			checked.ImageTransparency = checked.ImageTransparency - 0.2
@@ -226,9 +228,6 @@ function library:Window(title)
         
         checked.MouseButton1Click:Connect(turn)
         unchecked.MouseButton1Click:Connect(turn)
-        unchecked.MouseButton1Click:Connect(function()
-            callback(enabled)
-        end)
         
         return {Enabled = function() return enabled end}
     end
