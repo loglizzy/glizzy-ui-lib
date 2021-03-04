@@ -235,6 +235,7 @@ function library:Window(title)
     end
     
     function window:Slider(text, callback, options)
+	local sel_value
         local Slider = Instance.new("ImageLabel")
         local Title = Instance.new("TextLabel")
         local Indicator = Instance.new("ImageLabel")
@@ -361,7 +362,7 @@ function library:Window(title)
 			    				local minv = options.min
 			    				local diff = maxv - minv
 	    
-			    				local sel_value = math.floor(((diff / 100) * p) + minv)
+			    				sel_value = math.floor(((diff / 100) * p) + minv)
 	    
 			    				value.Text = tostring(sel_value)
 			    				pcall(callback, sel_value)
@@ -379,7 +380,7 @@ function library:Window(title)
 			    end
 	    	end)
 	    end
-	    return slider_data, slider
+	    return {GetValue = function() return sel_value end}
     end
     return window
 end
