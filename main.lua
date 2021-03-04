@@ -106,6 +106,7 @@ function library:Window(title)
     cont.Size = UDim2.new(0, 143, 0, 42)
     
     list.Parent = cont
+    list.Padding = UDim2(0, 2)
     list.SortOrder = Enum.SortOrder.LayoutOrder
     
     local window = {}
