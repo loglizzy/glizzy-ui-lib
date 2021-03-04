@@ -232,7 +232,7 @@ function library:Window(title)
         return {Enabled = function() return enabled end}
     end
     
-    function window.Slider(text, callback)
+    function window:Slider(text, callback)
         local Slider = Instance.new("ImageLabel")
         local Title = Instance.new("TextLabel")
         local Indicator = Instance.new("ImageLabel")
