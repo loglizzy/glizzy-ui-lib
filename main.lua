@@ -235,7 +235,7 @@ function library:Window(title)
     end
     
     function window:Slider(text, callback, options)
-	local sel_value
+	local sel_value = options.min or 0
         local Slider = Instance.new("ImageLabel")
         local Title = Instance.new("TextLabel")
         local Indicator = Instance.new("ImageLabel")
