@@ -35,7 +35,8 @@ function library:Window(title)
     Frame.Size = UDim2.new(0, 157, 0, 42)
     
     local UserInputService = game:GetService("UserInputService")
-
+    
+    local slidding
     local gui = Frame
     
     local dragging
@@ -49,7 +50,7 @@ function library:Window(title)
     end
     
     gui.InputBegan:Connect(function(input)
-    	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+    	if not slidding and input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
     		dragging = true
     		dragStart = input.Position
     		startPos = gui.Position
@@ -176,7 +177,7 @@ function library:Window(title)
         	if vis then
         		crr = TweenService:Create(Frame, info, {Size = UDim2.new(0,157,0,42)}):Play()
         	else
-        		crr = TweenService:Create(Frame, info, {Size = UDim2.new(0,157,0,list.AbsoluteContentSize.Y+42)}):Play()
+        		crr = TweenService:Create(Frame, info, {Size = UDim2.new(0,157,0,list.AbsoluteContentSize.Y+46)}):Play()
         	end
         end)
         
@@ -321,10 +322,12 @@ function library:Window(title)
 	    do -- Slider Math
 	    	local Entered = false
 	    	slider.MouseEnter:Connect(function()
+	    	    slidding = true
 	    		Entered = true
 	    		Window.Draggable = false
 	    	end)
 	    	slider.MouseLeave:Connect(function()
+	    	    slidding = false
 	    		Entered = false
 	    		Window.Draggable = true
 	    	end)
