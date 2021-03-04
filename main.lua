@@ -44,6 +44,7 @@ function library:Window(title)
     _title.TextColor3 = Color3.fromRGB(214, 214, 214)
     _title.TextSize = 13.000
     _title.TextXAlignment = Enum.TextXAlignment.Left
+    _title.Text = title
     
     drop.Name = "drop"
     drop.Parent = Frame
