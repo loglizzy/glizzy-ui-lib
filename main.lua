@@ -106,7 +106,7 @@ function library:Window(title)
     cont.Size = UDim2.new(0, 143, 0, 42)
     
     list.Parent = cont
-    list.Padding = UDim2(0, 2)
+    list.Padding = UDim.new(0, 5)
     list.SortOrder = Enum.SortOrder.LayoutOrder
     
     local window = {}
@@ -266,7 +266,7 @@ function library:Window(title)
         
         Indicator.Name = "Indicator"
         Indicator.Parent = Slider
-        Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Indicator.ImageColor3 = Color3.fromRGB(145, 145, 145)
         Indicator.BackgroundTransparency = 1.000
         Indicator.Size = UDim2.new(0, 0, 0, 20)
         Indicator.Image = "rbxassetid://2851929490"
