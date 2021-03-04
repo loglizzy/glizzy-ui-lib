@@ -280,7 +280,7 @@ function library:Window(title)
         Value.Position = UDim2.new(1.02097893, -55, 0.650000036, -10)
         Value.Size = UDim2.new(0, 44, 0, 13)
         Value.Font = Enum.Font.GothamBold
-        Value.Text = "0%"
+        Value.Text = options.min
         Value.TextColor3 = Color3.fromRGB(200, 200, 200)
         Value.TextSize = 14.000
         Value.TextXAlignment = Enum.TextXAlignment.Right
@@ -378,8 +378,8 @@ function library:Window(title)
 			    end
 	    	end)
 	    end
-	    value.Text = tostring(options.min/options.max)
 	    return slider_data, slider
     end
     return window
 end
+return library
