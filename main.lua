@@ -231,6 +231,173 @@ function library:Window(title)
         
         return {Enabled = function() return enabled end}
     end
+    
+    function window.Slider(text, callback)
+        local Slider = Instance.new("ImageLabel")
+        local Title = Instance.new("TextLabel")
+        local Indicator = Instance.new("ImageLabel")
+        local Value = Instance.new("TextLabel")
+        
+        Slider.Name = "Slider"
+        Slider.Parent = game.StarterGui.ScreenGui.Frame.cont
+        Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Slider.BackgroundTransparency = 1.000
+        Slider.Position = UDim2.new(-0.188811183, 0, 0.174223602, 0)
+        Slider.Size = UDim2.new(1, 0, 0, 20)
+        Slider.Image = "rbxassetid://2851929490"
+        Slider.ImageColor3 = Color3.fromRGB(51, 54, 57)
+        Slider.ScaleType = Enum.ScaleType.Slice
+        Slider.SliceCenter = Rect.new(4, 4, 4, 4)
+        
+        Title.Name = "Title"
+        Title.Parent = Slider
+        Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Title.BackgroundTransparency = 1.000
+        Title.Position = UDim2.new(0.0469999984, 0, 0.5, -10)
+        Title.Size = UDim2.new(0, 85, 0, 20)
+        Title.ZIndex = 2
+        Title.Font = Enum.Font.Gotham
+        Title.Text = "Slider"
+        Title.TextColor3 = Color3.fromRGB(200, 200, 200)
+        Title.TextSize = 12.000
+        Title.TextXAlignment = Enum.TextXAlignment.Left
+        
+        Indicator.Name = "Indicator"
+        Indicator.Parent = Slider
+        Indicator.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Indicator.BackgroundTransparency = 1.000
+        Indicator.Size = UDim2.new(0, 0, 0, 20)
+        Indicator.Image = "rbxassetid://2851929490"
+        Indicator.ImageColor3 = Color3.fromRGB(93, 93, 99)
+        Indicator.ScaleType = Enum.ScaleType.Slice
+        Indicator.SliceCenter = Rect.new(4, 4, 4, 4)
+        
+        Value.Name = "Value"
+        Value.Parent = Slider
+        Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+        Value.BackgroundTransparency = 1.000
+        Value.Position = UDim2.new(1.02097893, -55, 0.650000036, -10)
+        Value.Size = UDim2.new(0, 44, 0, 13)
+        Value.Font = Enum.Font.GothamBold
+        Value.Text = "0%"
+        Value.TextColor3 = Color3.fromRGB(200, 200, 200)
+        Value.TextSize = 14.000
+        Value.TextXAlignment = Enum.TextXAlignment.Right
+    
+	    local Mouse = game.Players.LocalPlayer:GetMouse()
+	    local UIS = game:GetService('UserInputService')
+	    local RS = game:GetService('RunService')
+	    local TweenService = game:GetService('TweenService')
+	    local slider_data = {}
+	    
+	    local function gMouse()
+	    	return Vector2.new(UIS:GetMouseLocation().X + 1, UIS:GetMouseLocation().Y - 35)
+	    end
+	    
+	    slider_text = tostring(slider_text or "New Slider")
+	    callback = typeof(callback) == "function" and callback or function()end
+	    slider_options = typeof(slider_options) == "table" and slider_options or {}
+	    slider_options = {
+	    	["min"] = slider_options.min or 0,
+	    	["max"] = slider_options.max or 100,
+	    	["readonly"] = slider_options.readonly or false,
+	    }
+	    
+	    local slider,Window = Slider
+	    
+	    local title = slider:FindFirstChild("Title")
+	    local indicator = slider:FindFirstChild("Indicator")
+	    local value = slider:FindFirstChild("Value")
+	    
+	    title.Text = slider_text
+	    
+	    local function Resize(part, new, _delay)
+	    	_delay = _delay or 0.5
+	    	local tweenInfo = TweenInfo.new(_delay, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+	    	local tween = TweenService:Create(part, tweenInfo, new)
+	    	tween:Play()
+	    end
+	    
+	    do -- Slider Math
+	    	local Entered = false
+	    	slider.MouseEnter:Connect(function()
+	    		Entered = true
+	    		Window.Draggable = false
+	    	end)
+	    	slider.MouseLeave:Connect(function()
+	    		Entered = false
+	    		Window.Draggable = true
+	    	end)
+	    
+	    	local Held = false
+	    	UIS.InputBegan:Connect(function(inputObject)
+			if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+				Held = true
+	
+				spawn(function() -- Loop check
+					if Entered and not slider_options.readonly then
+						while Held do
+							local mouse_location = gMouse()
+							local x = (slider.AbsoluteSize.X - (slider.AbsoluteSize.X - ((mouse_location.X - slider.AbsolutePosition.X)) + 1)) / slider.AbsoluteSize.X
+	
+							local min = 0
+							local max = 1
+	
+							local size = min
+							if x >= min and x <= max then
+								size = x
+							elseif x < min then
+								size = min
+							elseif x > max then
+								size = max
+							end
+	
+							Resize(indicator, {Size = UDim2.new(size or min, 0, 0, 20)}, 0.1)
+							local p = math.floor((size or min) * 100)
+	
+							local maxv = slider_options.max
+							local minv = slider_options.min
+							local diff = maxv - minv
+	
+							local sel_value = math.floor(((diff / 100) * p) + minv)
+	
+							value.Text = tostring(sel_value)
+							pcall(callback, sel_value)
+	
+							RS.Heartbeat:Wait()
+						end
+					end
+				end)
+			end
+		end)
+	    	UIS.InputEnded:Connect(function(inputObject)
+			if inputObject.UserInputType == Enum.UserInputType.MouseButton1 then
+				Held = false
+			end
+		end)
+	    
+	    	function slider_data:Set(new_value)
+	    		new_value = tonumber(new_value) or 0
+	    		new_value = (((new_value >= 0 and new_value <= 100) and new_value) / 100)
+	    
+	    		Resize(indicator, {Size = UDim2.new(new_value or 0, 0, 0, 20)}, 0.1)
+	    		local p = math.floor((new_value or 0) * 100)
+	    
+	    		local maxv = slider_options.max
+	    		local minv = slider_options.min
+	    		local diff = maxv - minv
+	    
+	    		local sel_value = math.floor(((diff / 100) * p) + minv)
+	    
+	    		value.Text = tostring(sel_value)
+	    		pcall(callback, sel_value)
+	    	end
+	    
+	    	slider_data:Set(slider_options["min"])
+	    end
+	    
+	    return slider_data, slider
+    end
     return window
 end
 return library
