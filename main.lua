@@ -239,7 +239,7 @@ function library:Window(title)
         local Value = Instance.new("TextLabel")
         
         Slider.Name = "Slider"
-        Slider.Parent = game.StarterGui.ScreenGui.Frame.cont
+        Slider.Parent = cont
         Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         Slider.BackgroundTransparency = 1.000
         Slider.Position = UDim2.new(-0.188811183, 0, 0.174223602, 0)
@@ -257,7 +257,7 @@ function library:Window(title)
         Title.Size = UDim2.new(0, 85, 0, 20)
         Title.ZIndex = 2
         Title.Font = Enum.Font.Gotham
-        Title.Text = "Slider"
+        Title.Text = text
         Title.TextColor3 = Color3.fromRGB(200, 200, 200)
         Title.TextSize = 12.000
         Title.TextXAlignment = Enum.TextXAlignment.Left
